@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5.0" type="plugin" group="system" method="upgrade">
+	<name>AEC To OS Membership  routing</name>
+	<author>Tuan Pham Ngoc</author>
+	<authorEmail>contact@joomdonation.com</authorEmail>
+	<authorUrl>http://www.joomdonation.com</authorUrl>
+	<copyright>Copyright (C) 2012 - 2016 Ossolution Team</copyright>
+	<license>GNU General Public License version 3, or later</license>
+	<creationDate>July 2016</creationDate>
+	<version>2.6.0</version>
+	<description>This plugin will catch AEC Paypal IPN messages and router it back to Membership Pro for further processing. It is needed if you migrate data from AEC to Membership Pro</description>	
+	<files>
+		<filename plugin="aec2osmembership">aec2osmembership.php</filename>
+	</files>			
+</extension>
