@@ -212,7 +212,8 @@ class AEC2MembershipProController extends JControllerLegacy
 				if (!isset($plans[$subscription->plan]))
 				{
 					continue;
-				}				
+				}
+
 				$row->plan_id      = $plans[$subscription->plan]->id;
 				$row->email        = $subscription->email;
 				$row->user_id      = $subscription->userid;
@@ -220,14 +221,7 @@ class AEC2MembershipProController extends JControllerLegacy
 				$row->payment_date = $subscription->signup_date;
 				$row->from_date    = $subscription->signup_date;
 				$row->to_date      = $subscription->expiration;
-				
-				if(!$row->plan_id)
-				{
-						
-				}
-				
-
-				$status = strtolower($subscription->status);
+				$status            = strtolower($subscription->status);
 				switch ($status)
 				{
 					case 'pending':
