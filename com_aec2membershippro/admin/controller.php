@@ -324,14 +324,11 @@ class AEC2MembershipProController extends JControllerLegacy
 					$row->invoice_number = OSMembershipHelper::getInvoiceNumber($row);
 				}
 
-				if ($calculateMainRecord)
+				if ($calculateMainRecord && $row->plan_main_record == 1)
 				{
-					if ($row->plan_main_record == 1)
-					{
-						$row->plan_subscription_status    = $row->published;
-						$row->plan_subscription_from_date = $row->from_date;
-						$row->plan_subscription_to_date   = $row->to_date;
-					}
+					$row->plan_subscription_status    = $row->published;
+					$row->plan_subscription_from_date = $row->from_date;
+					$row->plan_subscription_to_date   = $row->to_date;
 				}
 
 				$row->store();
