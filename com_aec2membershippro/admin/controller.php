@@ -48,11 +48,9 @@ class AEC2MembershipProController extends JControllerLegacy
 		$db->setQuery($query);
 		$categories = $db->loadObjectList();
 
-		$row = JTable::getInstance('Category', 'OSMembershipTable');
-
 		foreach ($categories as $category)
 		{
-			$row->id          = 0;
+			$row              = JTable::getInstance('Category', 'OSMembershipTable');
 			$row->title       = $category->name;
 			$row->description = $category->desc;
 			$row->published   = $category->active;
@@ -99,11 +97,9 @@ class AEC2MembershipProController extends JControllerLegacy
 		$db->setQuery($query);
 		$plans = $db->loadObjectList();
 
-		$row = JTable::getInstance('Plan', 'OSMembershipTable');
-
 		foreach ($plans as $plan)
 		{
-			$row->id          = 0;
+			$row              = JTable::getInstance('Plan', 'OSMembershipTable');
 			$row->title       = $plan->name;
 			$row->description = $row->short_description = $plan->desc;
 			$row->published   = $plan->active;
@@ -116,6 +112,7 @@ class AEC2MembershipProController extends JControllerLegacy
 				->from('#__acctexp_itemxgroup')
 				->where('group_id != 1')
 				->where('item_id = ' . $plan->id);
+			$db->setQuery($query);
 
 			$categoryId = (int) $db->loadResult();
 			if ($categoryId && isset($categories[$categoryId]))
@@ -138,9 +135,9 @@ class AEC2MembershipProController extends JControllerLegacy
 			}
 			$row->store();
 		}
-
+		
 		$numberPlans = count($plans);
-
+		
 		$this->setRedirect('index.php?option=com_aec2membershippro&task=migrate_subscriptions', JText::sprintf('%s plans migrated. Now, the system will migrating coupons', $numberPlans));
 	}
 
@@ -175,7 +172,7 @@ class AEC2MembershipProController extends JControllerLegacy
 		$query->select('a.id, a.userid, a.`type`, a.`primary`, a.`status`, a.`signup_date`, a.lastpay_date, a.plan, a.recurring, a.expiration')
 			->select('b.name, b.email')
 			->from('#__acctexp_subscr AS a')
-			->leftJoin('#__users AS b ON a.userid = b.id')
+			->innerJoin('#__users AS b ON a.userid = b.id')
 			->order('id');
 		$db->setQuery($query, $start, 200);
 		$subscriptions       = $db->loadObjectList();
@@ -187,15 +184,13 @@ class AEC2MembershipProController extends JControllerLegacy
 		}
 		else
 		{
-			$row = JTable::getInstance('Subscriber', 'OSMembershipTable');
-
 			$membershipProVersion = OSMembershipHelper::getInstalledVersion();
 			$calculateMainRecord  = version_compare($membershipProVersion, '2.6.0', 'ge');
 
 			foreach ($subscriptions as $subscription)
 			{
-				$row->id = 0;
-				$name    = $subscription->name;
+				$row  = JTable::getInstance('Subscriber', 'OSMembershipTable');
+				$name = $subscription->name;
 				if ($name)
 				{
 					$pos = strpos($name, ' ');
